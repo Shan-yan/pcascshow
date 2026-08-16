@@ -21,16 +21,40 @@ The enlarged landing page keeps `PCA-SC Bench` on one expressive line and makes 
 and P/C/A/S/C acronym legend the visual subject. Compact supporting copy sits
 below it, while a manuscript-grounded diagonal carousel fills the right side
 with continuously rotating, independently focusable station-scene crops. Its
-soft teal transition is rendered behind both columns and the images, so it cannot
-cross an enlarged tile.
+soft teal transition is rendered behind both columns, while one shared alpha
+gradient blends the complete gallery—images, glow and background—into the page,
+so no overlay can cross an enlarged tile.
 The next section animates the transition from
 task-success-only evaluation to public-space safety and PCA-SC diagnosis.
-One large, reverse-moving circular-text track combines 300 instances, six evaluated models and
-the 50+ participant human study around a luminous, live-animated “Start
-exploring / 开始探索” control. Selecting it removes the center control and expands a full-width five-card Bento
+The exploration section layers a locally rendered animated light-ray field
+behind a large circular-text track and a restrained, live-animated “Start
+exploring / 开始探索” control. The ring carries the three benchmark-scale facts;
+the background uses nine softly breathing teal/blue rays with subtle horizontal
+pointer response and no external runtime assets. Selecting the control removes it,
+fades both background layers and expands a full-width five-card Bento
 overview: every destination has its own dataset, model, method, demo or paper
 preview, and the entire card opens that page. Detailed benchmark overviews and paper
 findings live on the dataset, model and paper subpages rather than the homepage.
+
+The dataset route opens with a draggable, wheel-responsive cylindrical gallery
+of the four representative station-scene crops. It rotates gently when idle and
+provides explicit previous/next controls for non-drag interaction.
+
+The dataset details also include the manuscript-defined success × safety
+quadrants (`successful_safe`, `unsuccessful_safe`, `successful_unsafe`, and
+`unsuccessful_unsafe`). Color blocks become animated folders on hover; selecting
+a folder scatters scene previews, and hovering a preview opens its annotation
+panel. Formal records can be connected through
+`public/data/pca-sc-quadrants.json`; empty arrays intentionally fall back to
+clearly labeled manuscript-scene interface previews.
+
+Every research route now begins with one dedicated full-screen portal rather
+than a repeated four-card dashboard. Dataset uses an editorial scene-cover
+composition; Models uses three responsive capability cards; Methodology uses a
+moving P–C–A–Safety signal network; Evaluation Demo uses a staged live-output
+terminal; and Paper uses a floating evidence record with participant nodes.
+English and Chinese routes share the same interaction logic and layout system,
+then continue into their own detailed sections below the portal.
 
 The motion language is inspired by the modular interaction patterns catalogued
 by Vue Bits / React Bits—split-and-blur title entrance, scroll reveal,

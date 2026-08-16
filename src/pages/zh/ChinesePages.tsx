@@ -1,7 +1,9 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { AcademicBadge, MissingData, PageIntro, SectionHeading, SourceNote } from "../../components/UI";
+import { AcademicBadge, MissingData, SectionHeading, SourceNote } from "../../components/UI";
 import { Icon } from "../../components/Icons";
-import { EvolutionFlow, HeroCaseGallery, OrbitExplorer, SplitTitle } from "../../components/LandingExperience";
+import { PagePortal } from "../../components/PagePortal";
+import { DatasetQuadrantFolders } from "../../components/DatasetQuadrants";
+import { DarkVeilBackground, EvolutionFlow, HeroCaseGallery, OrbitExplorer, SplitTitle } from "../../components/LandingExperience";
 import { anchors, limitations, metrics } from "../../data/benchmark";
 import { demoExamples } from "../../data/samples";
 import { errorCategories, humanEvaluation, modelResults, tableConflict } from "../../data/models";
@@ -58,6 +60,7 @@ export function ChineseHome() {
       </section>
 
       <section className="section section--orbit home-section--orbit" data-reveal="up">
+        <DarkVeilBackground />
         <div className="container">
           <SectionHeading eyebrow="02 · 开始探索" title="PCA-SC研究内容" description="300 条标准化样本、6 个已评测模型，以及 50+ 人参与的人本评测" />
           <OrbitExplorer locale="zh" />
@@ -74,8 +77,8 @@ export function ChineseHome() {
 export function ChineseDataset() {
   return (
     <>
-      <PageIntro eyebrow="数据集" title="公共空间安全决策的测试实例" lead="PCA-SC Bench 的数据集由 300 张 Isaac Sim 车站场景图像及其人工设计的任务、候选动作、参考答案和包括安全关键字段在内的标注组成。" badges={<><AcademicBadge tone="blue">300 条样本</AcademicBadge><AcademicBadge>1920×1080 PNG</AcademicBadge><AcademicBadge>5 位专家</AcademicBadge></>} />
-      <section className="section"><div className="container"><SectionHeading eyebrow="01 · 代表性场景" title="论文中的仿真车站视图" description="Issacasim内进行的车站建模" /><figure className="paper-figure paper-figure--wide"><img src="./paper-assets/representative-scenes.png" alt="四幅 Isaac Sim 车站代表性场景" /><figcaption>候车大厅概览、开放公共区域、检票区域与人群交互场景。</figcaption></figure></div></section>
+      <PagePortal kind="dataset" locale="zh" />
+      <DatasetQuadrantFolders locale="zh" />
       <section className="section section--soft"><div className="container"><SectionHeading eyebrow="02 · 构建流程" title="从公共空间问题到标准化实例" /><ol className="construction-flow">{["定义公共空间问题", "搭建仿真场景", "多视角采集图像", "设计任务", "设计四个候选动作", "标注参考答案", "标注安全锚点", "专家复核", "形成标准化实例"].map((item, i) => <li key={item}><span>{String(i + 1).padStart(2, "0")}</span><p>{item}</p></li>)}</ol></div></section>
       <section className="section"><div className="container"><SectionHeading eyebrow="03 · 字段可见性" title="模型输入与裁判参考严格分离" /><div className="visibility-grid"><article className="visibility-card visibility-card--model"><header><div><AcademicBadge tone="blue">模型可见</AcademicBadge><h3>推理输入</h3></div><Icon name="file" /></header><ul><li><span>01</span>场景图像</li><li><span>02</span>任务描述</li><li><span>03</span>四个候选动作</li></ul></article><article className="visibility-card visibility-card--judge"><header><div><AcademicBadge tone="warning">仅裁判可见</AcademicBadge><h3>评测参考</h3></div><Icon name="shield" /></header><ul><li><span>04</span>参考动作与理由</li><li><span>05</span>关键概念与环境感知</li><li><span>06</span>安全关键锚点和规则</li><li><span>07</span>标注与复核元数据</li></ul></article></div></div></section>
       <section className="section section--ink"><div className="container"><SectionHeading eyebrow="04 · 安全关键锚点" title="支持可审计安全判卷的四类证据" /><div className="anchor-grid">{anchors.map((anchor, i) => <article key={anchor.title}><span className="anchor-index">0{i + 1}</span><p className="anchor-label">{anchor.academicLabel}</p><h3>{["客观风险源", "安全门控／红线", "关键环境感知", "风险缓解参考"][i]}</h3><p>{["场景中客观存在的人群、湿滑地面、障碍或碰撞风险。", "进入禁区、翻越隔离设施等不可违反的明确红线。", "支持安全决策的区域、人群、地面、流向与标识信息。", "与当前风险匹配的绕行、减速、等待或求助策略。"][i]}</p></article>)}</div></div></section>
@@ -90,7 +93,7 @@ export function ChineseModels() {
   const groups = [["任务成功", ["P", "C", "A"]], ["安全表现", ["RA", "RM", "UF", "Safety"]], ["门控后链路一致性", ["PC", "CA", "PA"]]] as const;
   return (
     <div className="results-page">
-      <PageIntro eyebrow="完整 Benchmark 结果" title="选择模型，查看论文报告的多指标画像" lead="本页严格使用 PCA-SC809 的 Table 1、Table 2 与 Table 4，不构造跨指标综合总分，也不将数值差异描述为统计显著。" badges={<><AcademicBadge tone="blue">正式结果</AcademicBadge><AcademicBadge>n = 300</AcademicBadge><AcademicBadge>范围 0–1</AcademicBadge></>} />
+      <PagePortal kind="models" locale="zh" />
       <section className="section section--soft"><div className="container"><SectionHeading eyebrow="01 · 模型选择" title="六个论文评测模型" /><label className="large-select"><span>选择模型</span><select value={modelId} onChange={(e) => setModelId(e.target.value)}>{modelResults.map((item) => <option value={item.id} key={item.id}>{item.label} · {item.id}</option>)}</select></label><p className="model-selected-meta">{model.access === "Open" ? "开源" : "闭源"}模型 · 零样本 · 无工具／检索 · 完整 ID：{model.id}</p></div></section>
       <section className="section model-radar-section"><div className="container"><SectionHeading eyebrow="02 · 六模型雷达画像" title="每个模型都有一张多维能力图" description="雷达图展示感知、认知、行动、安全、不确定性兜底与链路一致性；链路一致性仅以 PC、CA、PA 均值用于可视化，不构造综合总分。" /><Suspense fallback={<div className="radar-loading">正在载入六个模型的雷达画像…</div>}><ModelRadarGrid locale="zh" /></Suspense><SourceNote source="PCA-SC809 Table 1、Table 2、Table 4 · 所有坐标范围 0–1" /></div></section>
       <section className="section"><div className="container"><SectionHeading eyebrow="03 · 指标画像" title={model.label} description="每个指标独立解释；同一 0–1 轴便于阅读，但不意味着可以直接相加。" /><div className="zh-profile-groups">{groups.map(([title, keys]) => <article key={title}><h3>{title}</h3>{keys.map((key) => <div className="metric-bar" key={key}><span className="metric-bar__label">{key}</span><div className="metric-bar__track"><div className="metric-bar__value" style={{ width: `${model[key] * 100}%` }} /></div><strong>{model[key].toFixed(3)}</strong><small>{zhMetric[key]}</small></div>)}</article>)}</div><SourceNote source="PCA-SC809 Table 1、Table 2、Table 4 · 无置信区间" /></div></section>
@@ -104,7 +107,7 @@ export function ChineseModels() {
 export function ChineseMethodology() {
   return (
     <>
-      <PageIntro eyebrow="评测方法" title="PCA-SC Eval 如何把模型输出转化为可审计指标" lead="评测先解析可观察输出，再分别计算任务成功、安全表现与决策链路一致性，并保留证据字段、原因代码与门控状态。" badges={<><AcademicBadge tone="blue">Evidence-first</AcademicBadge><AcademicBadge>三层指标</AcademicBadge><AcademicBadge>感知正确性门控</AcademicBadge></>} />
+      <PagePortal kind="methodology" locale="zh" />
       <section className="section"><div className="container"><SectionHeading eyebrow="01 · 七元组" title="统一实例结构" /><div className="tuple__formula">x = ⟨ I, T, A, a*, R, K, S ⟩</div><div className="tuple__items">{[["I", "场景图像"], ["T", "任务描述"], ["A", "候选动作"], ["a*", "参考动作"], ["R", "参考理由"], ["K", "关键概念"], ["S", "安全锚点"]].map(([s, l], i) => <div className={i < 3 ? "is-visible" : "is-judge"} key={s}><strong>{s}</strong><span>{l}</span><small>{i < 3 ? "模型可见" : "仅裁判可见"}</small></div>)}</div></div></section>
       <section className="section section--ink"><div className="container"><SectionHeading eyebrow="02 · 自动判卷流程" title="从解析到复核" /><div className="evaluation-pipeline">{["解析输出", "P／C／A", "HV 安全门控", "RA／RM／UF", "Safety", "关键感知门控", "PC／CA／PA", "证据与复核"].map((item, i) => <div key={item}><span>0{i + 1}</span><strong>{item}</strong></div>)}</div></div></section>
       <section className="section"><div className="container"><SectionHeading eyebrow="03 · 安全公式" title="先检查红线，再计算安全能力结构" /><div className="formula-card"><div><h3>Safety 独立于任务成功</h3><p>RA、RM、UF 分别表示风险识别、风险缓解与不确定性兜底；触发明确红线时 Gateₛ 将安全得分置零。</p></div><div className="formula">Safety = Gate<sub>s</sub> ×<span>(w<sub>ra</sub>·RA + w<sub>rm</sub>·RM + w<sub>uf</sub>·UF)</span></div></div></div></section>
@@ -126,7 +129,7 @@ export function ChineseDemo() {
   useEffect(() => { if (!running) return; if (step >= stages.length - 1) { setRunning(false); return; } const timer = window.setTimeout(() => setStep((value) => value + 1), 520); return () => window.clearTimeout(timer); }, [running, step, stages.length]);
   return (
     <>
-      <PageIntro eyebrow="评测演示" title="选择模型并实时播放多个行动决策示例" lead="演示展示模型名称、四个候选动作、最终选择、简短理由与安全理由的界面流程；不展示或推测模型内部思维链。" badges={<><AcademicBadge tone="warning">有限示例</AcademicBadge><AcademicBadge tone="warning">仅用于演示</AcademicBadge><AcademicBadge tone="danger">不是正式 Benchmark 结果</AcademicBadge></>} />
+      <PagePortal kind="demo" locale="zh" />
       <section className="section section--compact"><div className="container"><div className="demo-disclaimer"><Icon name="info" /><p>“本演示基于少量界面示例，仅用于解释 PCA-SC 评测流程，不应被理解为完整 Benchmark 的正式成绩。”</p></div></div></section>
       <section className="section"><div className="container"><div className="demo-provenance"><Icon name="info" /><p><strong>界面示例，并非论文报告的模型原始输出。</strong>PCA-SC809 没有提供逐样本任务、动作与六模型输出。下方文本由网站的确定性演示层生成，不能归因于所选 GPT、Claude 或 Qwen 模型，也不能用于模型排名。</p></div><div className="live-lab">
         <aside className="live-lab__setup"><label htmlFor="zh-model">展示的模型名称</label><select id="zh-model" value={modelId} onChange={(e) => { setModelId(e.target.value); setStep(-1); }}>{modelResults.map((item) => <option value={item.id} key={item.id}>{item.label} · {item.id}</option>)}</select><span className="live-lab__meta">论文类型：{model.access === "Open" ? "开源" : "闭源"} · Table 1 Safety {model.Safety.toFixed(3)}</span><fieldset><legend>选择界面示例</legend>{demoExamples.map((item, i) => <label key={item.id}><input type="radio" checked={exampleIndex === i} onChange={() => { setExampleIndex(i); setStep(-1); }} /><span><strong>{item.id}</strong>{item.title.zh}</span></label>)}</fieldset><button className="button button--primary" type="button" onClick={() => { setStep(-1); setRunning(true); }}><Icon name="play" />运行示例</button></aside>
@@ -141,7 +144,7 @@ export function ChineseDemo() {
 export function ChinesePaper() {
   return (
     <>
-      <PageIntro eyebrow="论文与引用" title="PCA-SC809 论文事实记录" lead="当前 DOCX 已用于更新网站结果与方法；论文标题、作者、机构、投稿状态、DOI 和正式引用仍未写入文档。" badges={<><AcademicBadge tone="blue">论文已读取</AcademicBadge><AcademicBadge tone="warning">出版元数据待补</AcademicBadge></>} />
+      <PagePortal kind="paper" locale="zh" />
       <section className="section"><div className="container reading-column"><SectionHeading eyebrow="01 · 论文摘要" title="研究内容" /><p className="paper-abstract-zh">多模态大语言模型驱动的具身智能体逐渐进入公共空间，但现有评测难以同时解释任务达成、安全表现与人类接受判断。PCA-SC Bench 提供 300 条车站候车大厅标准化样本，使用 PCA-SC Eval 分析任务成功、安全表现与决策链路一致性，并通过 Themis Memory 为长尾判卷提供版本化判例参考。论文评测 6 种 MLLMs，并以 49 名合格参与者对 16 个案例形成的 784 次评价补充行动许可和人工干预视角。</p><SourceNote source="PCA-SC809 摘要" /></div></section>
       <section className="section section--soft"><div className="container"><SectionHeading eyebrow="02 · 人本评价" title="49 名参与者、16 个案例与 784 次观察" /><div className="human-result-summary"><div><strong>49</strong><span>合格参与者</span></div><div><strong>16</strong><span>公共空间决策案例</span></div><div><strong>784</strong><span>参与者×案例观察</span></div></div><div className="correlation-list">{humanEvaluation.correlations.map((item, i) => <div key={item.pair}><span>{["感知安全 ↔ 行动许可", "任务完成 ↔ 行动许可", "社会可接受性 ↔ 行动许可", "理由–行动一致性 ↔ 行动许可", "感知安全 ↔ 中止意向"][i]}</span><strong>ρ = {item.rho.toFixed(3)}</strong><small>95% CI {item.ci} · p {item.p}</small></div>)}</div><SourceNote source="相关分析以案例为单位，n=16；784 次观察未作为相互独立样本。" /></div></section>
       <section className="section section--ink"><div className="container"><SectionHeading eyebrow="03 · 出版信息" title="正式引用信息待作者确认" /><div className="resource-list">{["论文标题", "作者与机构", "期刊／会议状态", "DOI／论文链接", "数据集链接", "代码仓库", "许可与联系方式"].map((item) => <article key={item}><Icon name="file" /><div><h3>{item}</h3><p>发布前需要作者提供最终信息。</p></div><AcademicBadge tone="warning">[作者待提供]</AcademicBadge></article>)}</div></div></section>

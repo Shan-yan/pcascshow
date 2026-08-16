@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { limitations, metrics } from "../data/benchmark";
-import { AcademicBadge, PageIntro, SectionHeading, SourceNote } from "../components/UI";
+import { AcademicBadge, SectionHeading, SourceNote } from "../components/UI";
 import { Icon } from "../components/Icons";
+import { PagePortal } from "../components/PagePortal";
 
 const tuple = [
   ["I", "Scene image"],
@@ -30,18 +31,8 @@ export function Methodology() {
 
   return (
     <>
-      <PageIntro
-        eyebrow="Methodology"
-        title="How PCA-SC Bench is designed and scored"
-        lead="The benchmark separates visible inputs from judge-only references, uses safety and perception gates, and preserves structured evidence for every automated judgment."
-        badges={
-          <>
-            <AcademicBadge tone="blue">Evidence-first judging</AcademicBadge>
-            <AcademicBadge>Three evaluation layers</AcademicBadge>
-            <AcademicBadge>Auditable trace</AcademicBadge>
-          </>
-        }
-      />
+      <PagePortal kind="methodology" locale="en" />
+
 
       <nav className="section-index container" aria-label="Methodology sections">
         {[

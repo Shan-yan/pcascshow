@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { demoExamples, samples } from "../data/samples";
 import { modelResults } from "../data/models";
 import { metrics } from "../data/benchmark";
-import { AcademicBadge, MissingData, PageIntro } from "../components/UI";
+import { AcademicBadge, MissingData } from "../components/UI";
 import { Icon } from "../components/Icons";
+import { PagePortal } from "../components/PagePortal";
 
 const stages = [
   "Input received",
@@ -79,18 +80,8 @@ export function Demo() {
 
   return (
     <>
-      <PageIntro
-        eyebrow="Evaluation Demo"
-        title="A ten-position replay of the evaluation structure"
-        lead="This static demonstration explains how one observable model output would be parsed and judged. Ten approved samples, actual model outputs and grader traces have not yet been supplied, so no demonstration scores are fabricated."
-        badges={
-          <>
-            <AcademicBadge tone="warning">Limited Sample</AcademicBadge>
-            <AcademicBadge tone="warning">Demonstration Only</AcademicBadge>
-            <AcademicBadge tone="danger">Not an Official Benchmark Result</AcademicBadge>
-          </>
-        }
-      />
+      <PagePortal kind="demo" locale="en" />
+
 
       <section className="section section--compact">
         <div className="container">

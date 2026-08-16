@@ -1,0 +1,9 @@
+{
+  "version": "author-to-provide",
+  "quadrants": {
+    "successful_safe": [],
+    "unsuccessful_safe": [],
+    "successful_unsafe": [],
+    "unsuccessful_unsafe": []
+  }
+}

@@ -1,8 +1,9 @@
 import { lazy, Suspense, useMemo, useState } from "react";
 import { errorCategories, humanEvaluation, modelResults, tableConflict } from "../data/models";
 import { metrics } from "../data/benchmark";
-import { AcademicBadge, PageIntro, SectionHeading, SourceNote } from "../components/UI";
+import { AcademicBadge, SectionHeading, SourceNote } from "../components/UI";
 import { Icon } from "../components/Icons";
+import { PagePortal } from "../components/PagePortal";
 
 const ModelRadarGrid = lazy(() => import("../components/ModelRadar").then((module) => ({ default: module.ModelRadarGrid })));
 
@@ -52,18 +53,7 @@ export function Models() {
 
   return (
     <div className="results-page">
-      <PageIntro
-        eyebrow="Full Benchmark Results"
-        title="Six models, reported as distinct metric profiles"
-        lead="The formal result view reproduces manuscript Table 1 values for Perception, Cognition, Action and Safety. It does not create an overall score, merge incompatible tables or imply statistical significance."
-        badges={
-          <>
-            <AcademicBadge tone="blue">Full Benchmark Results</AcademicBadge>
-            <AcademicBadge>n = 300 instances</AcademicBadge>
-            <AcademicBadge>Scale 0–1</AcademicBadge>
-          </>
-        }
-      />
+      <PagePortal kind="models" locale="en" />
 
       <section className="section section--compact">
         <div className="container">

@@ -1,6 +1,6 @@
 import { SectionHeading } from "../components/UI";
 import { Icon } from "../components/Icons";
-import { EvolutionFlow, HeroCaseGallery, OrbitExplorer, SplitTitle } from "../components/LandingExperience";
+import { DarkVeilBackground, EvolutionFlow, HeroCaseGallery, OrbitExplorer, SplitTitle } from "../components/LandingExperience";
 
 export function Home() {
   return (
@@ -53,6 +53,7 @@ export function Home() {
       </section>
 
       <section className="section section--orbit home-section--orbit" data-reveal="up">
+        <DarkVeilBackground />
         <div className="container">
           <SectionHeading
             eyebrow="02 · Begin exploring"

@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import { anchors, benchmark } from "../data/benchmark";
 import { samples } from "../data/samples";
-import { AcademicBadge, MissingData, PageIntro, SectionHeading, SourceNote } from "../components/UI";
+import { AcademicBadge, MissingData, SectionHeading, SourceNote } from "../components/UI";
 import { Icon } from "../components/Icons";
+import { PagePortal } from "../components/PagePortal";
+import { DatasetQuadrantFolders } from "../components/DatasetQuadrants";
 
 const flow = [
   "Public-space problem definition",
@@ -35,18 +37,7 @@ export function Dataset() {
 
   return (
     <>
-      <PageIntro
-        eyebrow="Dataset"
-        title="A controlled view of public-space safety decisions"
-        lead="PCA-SC Bench contains 300 manually designed, annotated and reviewed test instances derived from a simulated station waiting hall. This page separates confirmed dataset structure from per-sample material that has not yet been supplied."
-        badges={
-          <>
-            <AcademicBadge tone="blue">300 instances</AcademicBadge>
-            <AcademicBadge>1920 × 1080 PNG</AcademicBadge>
-            <AcademicBadge>Isaac Sim</AcademicBadge>
-          </>
-        }
-      />
+      <PagePortal kind="dataset" locale="en" />
 
       <section className="section section--compact">
         <div className="container">
@@ -64,19 +55,7 @@ export function Dataset() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Paper evidence"
-            title="Representative simulated station views"
-            description="The manuscript presents a station overview, an open public area, a ticket-checking area and a crowd-interaction scene. These are representative scene views—not released sample records."
-          />
-          <figure className="paper-figure paper-figure--wide">
-            <img src="./paper-assets/representative-scenes.png" alt="Four representative Isaac Sim station scenes: waiting-hall overview, open public area, ticket-checking area, and crowd-interaction scene." />
-            <figcaption>PCA-SC809 Fig. 5 · Representative station waiting-hall scenes.</figcaption>
-          </figure>
-        </div>
-      </section>
+      <DatasetQuadrantFolders locale="en" />
 
       <section className="section section--soft">
         <div className="container">

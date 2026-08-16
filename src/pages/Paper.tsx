@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { citation } from "../data/benchmark";
 import { humanEvaluation } from "../data/models";
-import { AcademicBadge, MissingData, PageIntro, SectionHeading, SourceNote } from "../components/UI";
+import { AcademicBadge, MissingData, SectionHeading, SourceNote } from "../components/UI";
 import { Icon } from "../components/Icons";
+import { PagePortal } from "../components/PagePortal";
 
 const resources = [
   ["Paper PDF", "Canonical PDF or DOI", "paper"],
@@ -31,17 +32,8 @@ export function Paper() {
 
   return (
     <>
-      <PageIntro
-        eyebrow="Paper & Citation"
-        title="Research record and reusable citation"
-        lead="This page intentionally distinguishes manuscript-confirmed benchmark facts from publication metadata that the authors must finalize before release."
-        badges={
-          <>
-            <AcademicBadge tone="warning">Publication metadata pending</AcademicBadge>
-            <AcademicBadge>Source-aware fields</AcademicBadge>
-          </>
-        }
-      />
+      <PagePortal kind="paper" locale="en" />
+
 
       <section className="section section--compact">
         <div className="container paper-layout">
