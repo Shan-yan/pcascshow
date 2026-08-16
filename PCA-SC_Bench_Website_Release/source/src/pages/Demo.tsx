@@ -1,0 +1,298 @@
+import { useEffect, useMemo, useState } from "react";
+import { samples } from "../data/samples";
+import { metrics } from "../data/benchmark";
+import { AcademicBadge, MissingData, PageIntro } from "../components/UI";
+import { Icon } from "../components/Icons";
+
+const stages = [
+  "Input received",
+  "Model response displayed",
+  "Action parsed",
+  "Safety gate checked",
+  "RA / RM / UF scored",
+  "P / C / A checked",
+  "PC / CA / PA checked",
+  "Sample result finalized"
+];
+
+export function Demo() {
+  const [sampleIndex, setSampleIndex] = useState(0);
+  const [stageIndex, setStageIndex] = useState(-1);
+  const [running, setRunning] = useState(false);
+  const [announce, setAnnounce] = useState("");
+
+  useEffect(() => {
+    if (!running) return;
+    if (stageIndex >= stages.length - 1) {
+      setRunning(false);
+      setAnnounce("Replay structure complete. No score calculated because source data is missing.");
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      setStageIndex((current) => current + 1);
+    }, 650);
+    return () => window.clearTimeout(timer);
+  }, [running, stageIndex]);
+
+  const currentSample = samples[sampleIndex];
+  const progress = Math.max(0, ((stageIndex + 1) / stages.length) * 100);
+  const metricGroups = useMemo(
+    () => [
+      ["Task success", metrics.filter((item) => ["P", "C", "A"].includes(item.key))],
+      ["Safety", metrics.filter((item) => ["HV", "RA", "RM", "UF"].includes(item.key))],
+      ["Chain consistency", metrics.filter((item) => ["PC", "CA", "PA"].includes(item.key))]
+    ] as const,
+    []
+  );
+
+  const jump = (index: number) => {
+    setRunning(false);
+    setStageIndex(-1);
+    setSampleIndex(index);
+    setAnnounce(`${samples[index].id} selected`);
+  };
+
+  const start = () => {
+    if (stageIndex >= stages.length - 1) setStageIndex(-1);
+    setRunning(true);
+    setAnnounce("Evaluation explanation started");
+  };
+
+  return (
+    <>
+      <PageIntro
+        eyebrow="Evaluation Demo"
+        title="A ten-position replay of the evaluation structure"
+        lead="This static demonstration explains how one observable model output would be parsed and judged. Ten approved samples, actual model outputs and grader traces have not yet been supplied, so no demonstration scores are fabricated."
+        badges={
+          <>
+            <AcademicBadge tone="warning">Limited Sample</AcademicBadge>
+            <AcademicBadge tone="warning">Demonstration Only</AcademicBadge>
+            <AcademicBadge tone="danger">Not an Official Benchmark Result</AcademicBadge>
+          </>
+        }
+      />
+
+      <section className="section section--compact">
+        <div className="container">
+          <div className="demo-disclaimer" role="note">
+            <Icon name="info" size={26} />
+            <p>
+              “This demonstration score is calculated from a limited set of ten
+              illustrative samples and should not be interpreted as an official
+              full-benchmark result.”
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--compact">
+        <div className="container demo-setup">
+          <div>
+            <span>Model name</span>
+            <strong>[AUTHOR TO PROVIDE]</strong>
+          </div>
+          <div>
+            <span>Model version</span>
+            <strong>[AUTHOR TO PROVIDE]</strong>
+          </div>
+          <div>
+            <span>Evaluation date</span>
+            <strong>[AUTHOR TO PROVIDE]</strong>
+          </div>
+          <div>
+            <span>Number of samples</span>
+            <strong>10 illustrative positions</strong>
+          </div>
+          <div>
+            <span>Evaluation configuration</span>
+            <strong>[AUTHOR TO PROVIDE]</strong>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--soft demo-workspace-section">
+        <div className="container">
+          <div className="demo-progress">
+            <div>
+              <span>Current sample</span>
+              <strong>{sampleIndex + 1} / 10</strong>
+            </div>
+            <div>
+              <span>Completed</span>
+              <strong>0 / 10</strong>
+            </div>
+            <div>
+              <span>Passed</span>
+              <strong>—</strong>
+            </div>
+            <div>
+              <span>Failed</span>
+              <strong>—</strong>
+            </div>
+            <div>
+              <span>Needs source data</span>
+              <strong>10</strong>
+            </div>
+            <div className="demo-progress__score">
+              <AcademicBadge tone="warning">Provisional Demo Result</AcademicBadge>
+              <strong>Not calculated</strong>
+            </div>
+          </div>
+
+          <div className="sample-step-nav" aria-label="Demo samples">
+            {samples.map((sample, index) => (
+              <button
+                type="button"
+                key={sample.id}
+                className={sampleIndex === index ? "is-active" : ""}
+                aria-current={sampleIndex === index ? "step" : undefined}
+                onClick={() => jump(index)}
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <small>{sampleIndex === index ? "Current" : "Not started"}</small>
+              </button>
+            ))}
+          </div>
+
+          <div className="demo-workspace">
+            <article className="demo-panel demo-panel--sample">
+              <header><span>01</span><h2>Sample information</h2></header>
+              <div className="demo-scene">
+                <Icon name="database" size={36} />
+                <span>Scene image not supplied</span>
+              </div>
+              <dl>
+                <div><dt>Sample ID</dt><dd>{currentSample.id}</dd></div>
+                <div><dt>Task</dt><dd>[AUTHOR TO SELECT SAMPLE]</dd></div>
+                <div><dt>Metadata</dt><dd>[AUTHOR TO PROVIDE]</dd></div>
+              </dl>
+              <h3>Candidate actions</h3>
+              <ol className="action-placeholders">
+                {[1, 2, 3, 4].map((item) => <li key={item}><span>{item}</span>[AUTHOR TO PROVIDE]</li>)}
+              </ol>
+            </article>
+
+            <article className="demo-panel demo-panel--response">
+              <header><span>02</span><h2>Model response</h2></header>
+              <div className="response-status">
+                <AcademicBadge tone="warning">Observable output only</AcademicBadge>
+                <span>No chain-of-thought displayed</span>
+              </div>
+              <dl>
+                <div><dt>Selected action</dt><dd>[AUTHOR TO PROVIDE]</dd></div>
+                <div><dt>Parsing status</dt><dd>Not available</dd></div>
+              </dl>
+              <h3>Actual response</h3>
+              <MissingData detail="Provide the saved, observable model output for this sample. Do not provide or infer hidden chain-of-thought." />
+              <h3>Structured parsing</h3>
+              <pre className="schema-preview" aria-label="Expected parsed output structure">{`{
+  "answer": null,
+  "perception_items": [],
+  "reasoning_claims": [],
+  "constraints": [],
+  "uncertainty": null,
+  "selected_action": null,
+  "safety_reason": null
+}`}</pre>
+            </article>
+
+            <article className="demo-panel demo-panel--evaluation">
+              <header><span>03</span><h2>Evaluation</h2></header>
+              {metricGroups.map(([group, items]) => (
+                <div className="evaluation-group" key={group}>
+                  <h3>{group}</h3>
+                  {items.map((item) => (
+                    <div key={item.key}>
+                      <span title={item.definition}>{item.key}</span>
+                      <strong>—</strong>
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <dl>
+                <div><dt>Human review status</dt><dd>Needs source data</dd></div>
+                <div><dt>Error category</dt><dd>Not assigned</dd></div>
+              </dl>
+            </article>
+          </div>
+
+          <div className="animation-panel">
+            <div className="animation-panel__head">
+              <div>
+                <p className="eyebrow">Evaluation explanation</p>
+                <h2>{stageIndex >= 0 ? stages[stageIndex] : "Ready to replay"}</h2>
+              </div>
+              <AcademicBadge tone={running ? "blue" : "neutral"}>{running ? "Running" : "Paused"}</AcademicBadge>
+            </div>
+            <div className="animation-track" aria-label={`Evaluation stage ${stageIndex + 1} of ${stages.length}`}>
+              <i style={{ width: `${progress}%` }} />
+              {stages.map((stage, index) => (
+                <button
+                  key={stage}
+                  type="button"
+                  className={index <= stageIndex ? "is-complete" : ""}
+                  aria-label={`Go to ${stage}`}
+                  onClick={() => { setRunning(false); setStageIndex(index); }}
+                >
+                  <span>{index + 1}</span>
+                  <small>{stage}</small>
+                </button>
+              ))}
+            </div>
+            <div className="animation-controls">
+              <button className="button button--primary" type="button" onClick={running ? () => setRunning(false) : start}>
+                <Icon name={running ? "pause" : "play"} />
+                {running ? "Pause" : stageIndex < 0 ? "Start" : "Continue"}
+              </button>
+              <button
+                className="button button--secondary"
+                type="button"
+                onClick={() => { setRunning(false); setStageIndex((current) => Math.min(stages.length - 1, current + 1)); }}
+              >
+                Next step
+              </button>
+              <button
+                className="button button--text"
+                type="button"
+                onClick={() => { setRunning(false); setStageIndex(-1); }}
+              >
+                Replay
+              </button>
+              <button
+                className="button button--text"
+                type="button"
+                onClick={() => { setRunning(false); setStageIndex(stages.length - 1); setAnnounce("Animation skipped"); }}
+              >
+                Skip animation
+              </button>
+            </div>
+            <p className="sr-only" aria-live="polite">{announce}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="demo-empty-summary">
+            <div>
+              <AcademicBadge tone="warning">Provisional Demo Result</AcademicBadge>
+              <h2>Demo scorecard awaits approved evidence</h2>
+              <p>
+                Per-sample results, demonstration metric values, success and
+                failure examples, error categories and review records cannot be
+                calculated until the ten sample IDs, actual model outputs and
+                grader traces are supplied.
+              </p>
+            </div>
+            <MissingData detail="Required: ten sample records, saved outputs, evaluation configuration, structured judge records and human-review states." />
+          </div>
+          <div className="demo-next">
+            <a className="button button--secondary" href="#/models">View Full Benchmark Results</a>
+            <a className="button button--primary" href="#/methodology">Understand the Evaluation Method</a>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
