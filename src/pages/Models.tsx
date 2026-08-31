@@ -1,5 +1,5 @@
 import { lazy, Suspense, useMemo, useState } from "react";
-import { errorCategories, humanEvaluation, modelResults, tableConflict } from "../data/models";
+import { errorCategories, humanEvaluation, modelResults } from "../data/models";
 import { metrics } from "../data/benchmark";
 import { AcademicBadge, SectionHeading, SourceNote } from "../components/UI";
 import { Icon } from "../components/Icons";
@@ -68,12 +68,24 @@ export function Models() {
         </div>
       </section>
 
+      <section className="section model-radar-section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="01 · Six model portraits"
+            title="A radar profile for every evaluated model"
+            description="Each radar uses the manuscript values for perception, cognition, action, safety and uncertainty fallback; chain consistency is the mean of PC, CA and PA for visualization only, not an overall benchmark score."
+          />
+          <Suspense fallback={<div className="radar-loading">Loading six radar profiles…</div>}><ModelRadarGrid locale="en" /></Suspense>
+          <SourceNote source="Manuscript Table 1, Table 2 and Table 4 · all axes use 0–1" />
+        </div>
+      </section>
+
       <section className="section section--soft">
         <div className="container">
           <SectionHeading
-            eyebrow="01 · Model selector"
-            title="Compare up to four models"
-            description="Access type is included because it is explicitly reported in the manuscript-derived source."
+            eyebrow="02 · Model selector"
+            title="Select models, then inspect their values"
+            description="Choose up to four models and one metric group for a focused comparison."
           />
           <div className="metric-tabs" role="tablist" aria-label="Metric profile group">
             {(Object.keys(metricGroups) as ProfileGroup[]).map((group) => (
@@ -119,18 +131,6 @@ export function Models() {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="section model-radar-section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="02 · Six model portraits"
-            title="A radar profile for every evaluated model"
-            description="Each radar uses the manuscript values for perception, cognition, action, safety and uncertainty fallback; chain consistency is the mean of PC, CA and PA for visualization only, not an overall benchmark score."
-          />
-          <Suspense fallback={<div className="radar-loading">Loading six radar profiles…</div>}><ModelRadarGrid locale="en" /></Suspense>
-          <SourceNote source="Manuscript Table 1, Table 2 and Table 4 · all axes use 0–1" />
         </div>
       </section>
 
@@ -341,19 +341,6 @@ export function Models() {
             </div>
           </div>
           <SourceNote source="PCA-SC809 §5.2.5 · case-level Spearman correlations, n = 16 cases" />
-        </div>
-      </section>
-
-      <section className="section section--compact">
-        <div className="container">
-          <div className="integrity-banner" role="note">
-            <Icon name="info" size={24} />
-            <div>
-              <AcademicBadge tone="warning">[AUTHOR TO VERIFY]</AcademicBadge>
-              <h2>{tableConflict.title}</h2>
-              <p>{tableConflict.detail}</p>
-            </div>
-          </div>
         </div>
       </section>
 

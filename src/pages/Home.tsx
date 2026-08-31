@@ -1,6 +1,7 @@
 import { SectionHeading } from "../components/UI";
 import { Icon } from "../components/Icons";
 import { DarkVeilBackground, EvolutionFlow, HeroCaseGallery, OrbitExplorer, SplitTitle } from "../components/LandingExperience";
+import { GlassActionLinks } from "../components/HomeActions";
 
 export function Home() {
   return (
@@ -30,11 +31,7 @@ export function Home() {
                 separately, complemented by a human study with more than 50 public-space users.
               </p>
             </div>
-            <div className="button-row">
-              <a className="button button--primary" href="#/paper"><Icon name="file" /> Paper</a>
-              <a className="button button--secondary" href="#/models">Compare Models</a>
-              <a className="button button--text" href="#/demo">Evaluation Demo <Icon name="arrow" /></a>
-            </div>
+            <GlassActionLinks locale="en" />
           </div>
 
           <HeroCaseGallery locale="en" />

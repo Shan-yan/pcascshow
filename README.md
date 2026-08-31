@@ -26,19 +26,18 @@ gradient blends the complete gallery—images, glow and background—into the pa
 so no overlay can cross an enlarged tile.
 The next section animates the transition from
 task-success-only evaluation to public-space safety and PCA-SC diagnosis.
-The exploration section layers a locally rendered animated light-ray field
-behind a large circular-text track and a restrained, live-animated “Start
-exploring / 开始探索” control. The ring carries the three benchmark-scale facts;
-the background uses nine softly breathing teal/blue rays with subtle horizontal
-pointer response and no external runtime assets. Selecting the control removes it,
+The exploration section layers a locally rendered Dark Veil field behind a
+large circular-text track and a restrained “Start exploring / 开始探索” control.
+The ring carries the three benchmark-scale facts. Selecting the control removes it,
 fades both background layers and expands a full-width five-card Bento
 overview: every destination has its own dataset, model, method, demo or paper
 preview, and the entire card opens that page. Detailed benchmark overviews and paper
 findings live on the dataset, model and paper subpages rather than the homepage.
 
 The dataset route opens with a draggable, wheel-responsive cylindrical gallery
-of the four representative station-scene crops. It rotates gently when idle and
-provides explicit previous/next controls for non-drag interaction.
+of representative station scenes. The detail section then presents the
+manuscript success × safety quadrants as clean folders; selecting one opens its
+instances and scrolls directly to the expanded area.
 
 The dataset details also include the manuscript-defined success × safety
 quadrants (`successful_safe`, `unsuccessful_safe`, `successful_unsafe`, and
@@ -104,8 +103,26 @@ The launcher serves the prebuilt site at `http://localhost:4173`. It requires
 only Python 3, which is commonly available on Linux/macOS. On Windows,
 `run-local.bat` tries `py -3`, then `python`.
 
-The site has no runtime API, database, account system or external asset
-dependency.
+The static research pages have no external asset dependency. The optional live
+ten-sample evaluation uses the bundled Node server described below.
+
+## Live model API evaluation
+
+The evaluation demo has two modes. “Instant evaluation” is a deterministic,
+image-backed interaction preview. “Ten-sample live run” sends ten connected
+records to `POST /api/pca-sc/evaluate-batch`, calls the selected provider, and
+draws the returned PCA-SC metrics as a radar profile.
+
+1. Put exactly ten approved records in `public/data/evaluation-samples.json`.
+2. Configure `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `DASHSCOPE_API_KEY` in the
+   server environment. `.env.example` documents the names; the server does not
+   load or expose browser-side keys.
+3. Run `npm run build`, then `npm start`.
+
+Model IDs beginning with `gpt-` use OpenAI Responses, `claude-` uses Anthropic
+Messages, and `qwen-` uses Alibaba Model Studio's OpenAI-compatible vision
+endpoint. The ten-record score is an interactive batch result and remains
+separate from the manuscript's 300-instance formal aggregate results.
 
 ## Data provenance
 

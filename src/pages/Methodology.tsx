@@ -3,6 +3,7 @@ import { limitations, metrics } from "../data/benchmark";
 import { AcademicBadge, SectionHeading, SourceNote } from "../components/UI";
 import { Icon } from "../components/Icons";
 import { PagePortal } from "../components/PagePortal";
+import { EvaluationReasoningChain } from "../components/ReasoningChain";
 
 const tuple = [
   ["I", "Scene image"],
@@ -14,19 +15,7 @@ const tuple = [
   ["S", "Safety-critical anchors"]
 ];
 
-const evalFlow = [
-  ["01", "Parse", "Validate the selected action and observable output fields."],
-  ["02", "P / C / A", "Score task-success components independently."],
-  ["03", "HV gate", "Check explicit safety red-line violations."],
-  ["04", "RA / RM / UF", "Score awareness, mitigation and fallback."],
-  ["05", "Safety", "Apply the configured weights and Gateₛ."],
-  ["06", "P_key_correct", "Check whether key perception is correct."],
-  ["07", "PC / CA / PA", "Gate and report chain-consistency relations."],
-  ["08", "Trace & review", "Preserve evidence fields, reason codes and review state."]
-];
-
 export function Methodology() {
-  const [openStep, setOpenStep] = useState(0);
   const [metricGroup, setMetricGroup] = useState<"Task Success" | "Safety" | "Chain Consistency">("Task Success");
 
   return (
@@ -98,36 +87,11 @@ export function Methodology() {
       <section className="section section--ink" id="eval">
         <div className="container">
           <SectionHeading
-            eyebrow="03 · PCA-SC Eval"
-            title="A staged, observable evaluation process"
-            description="Select any step for a short explanation. The process displays no hidden model chain-of-thought."
+            eyebrow="03 · Observable reasoning chain"
+            title="How PCA-SC Eval reaches an auditable judgment"
+            description="Select any link to inspect the evaluation logic. This is an evidence trace derived from observable output—not private model chain-of-thought."
           />
-          <div className="method-stepper">
-            <div className="method-stepper__nav" role="tablist" aria-label="Evaluation stages">
-              {evalFlow.map(([number, title], index) => (
-                <button
-                  key={number}
-                  type="button"
-                  role="tab"
-                  aria-selected={openStep === index}
-                  className={openStep === index ? "is-active" : ""}
-                  onClick={() => setOpenStep(index)}
-                >
-                  <span>{number}</span>
-                  <strong>{title}</strong>
-                </button>
-              ))}
-            </div>
-            <div className="method-stepper__detail" role="tabpanel">
-              <span>{evalFlow[openStep][0]}</span>
-              <h3>{evalFlow[openStep][1]}</h3>
-              <p>{evalFlow[openStep][2]}</p>
-              <div className="observable-note">
-                <Icon name="info" />
-                <span>Uses observable output, structured parsing and reference evidence only.</span>
-              </div>
-            </div>
-          </div>
+          <EvaluationReasoningChain locale="en" />
         </div>
       </section>
 

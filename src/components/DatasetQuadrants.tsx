@@ -25,8 +25,8 @@ const previewRecords: Record<QuadrantKey, QuadrantSampleRecord[]> = Object.fromE
   quadrantKeys.map((key, quadrantIndex) => [key, Array.from({ length: 4 }, (_, index) => ({
     id: `PREVIEW-${quadrantIndex + 1}-${index + 1}`,
     sceneIndex: (quadrantIndex + index) % 4,
-    task: "[待接入正式样本任务]",
-    safetyAnchor: "[待接入安全关键锚点]",
+    task: "代表性公共空间行动选择场景预览",
+    safetyAnchor: "人群、通行限制或碰撞风险线索",
     annotationStatus: "论文代表场景 · 界面预览"
   }))])
 ) as Record<QuadrantKey, QuadrantSampleRecord[]>;
@@ -103,11 +103,10 @@ export function DatasetQuadrantFolders({ locale = "en", endpoint = "./data/pca-s
   }, [openKey, payload]);
 
   return (
-    <section className="section dataset-quadrants-section">
+    <section className="section dataset-quadrants-section" id="dataset-instances">
       <div className="container">
-        <header className="quadrant-folder-heading">
+        <header className="quadrant-folder-heading quadrant-folder-heading--single">
           <div><span>{text.eyebrow}</span><h2>{text.title}</h2><p>{text.description}</p></div>
-          <aside><Icon name="database" /><strong>{text.interfaceLabel}</strong><code>{endpoint}</code><small>{text.preview}</small></aside>
         </header>
         <p className="quadrant-folder-hint">{text.hint}</p>
         <div className="quadrant-folder-layout">
@@ -121,7 +120,7 @@ export function DatasetQuadrantFolders({ locale = "en", endpoint = "./data/pca-s
             {quadrantDisplayOrder.map((key, index) => {
               const [title, description] = text.quadrants[key];
               return (
-                <button type="button" className={`quadrant-folder quadrant-folder--${key.replace(/_/g, "-")} ${openKey === key ? "is-open" : ""}`} onClick={() => setOpenKey((current) => current === key ? null : key)} aria-expanded={openKey === key} key={key}>
+                <button type="button" className={`quadrant-folder quadrant-folder--${key.replace(/_/g, "-")} ${openKey === key ? "is-open" : ""}`} onClick={() => { setOpenKey(key); window.setTimeout(() => document.getElementById("quadrant-instance-stage")?.scrollIntoView({ behavior: "smooth", block: "center" }), 160); }} aria-expanded={openKey === key} key={key}>
                   <span className="quadrant-folder__index">0{index + 1}</span>
                   <span className="quadrant-folder__shape" aria-hidden="true"><i /><b /><b /><b /><em /></span>
                   <span className="quadrant-folder__copy"><strong>{title}</strong><small>{key}</small><p>{description}</p></span>
@@ -131,7 +130,7 @@ export function DatasetQuadrantFolders({ locale = "en", endpoint = "./data/pca-s
           </div>
         </div>
 
-        <div className={`quadrant-sample-stage ${openKey ? "is-open" : ""}`} aria-live="polite">
+        <div className={`quadrant-sample-stage ${openKey ? "is-open" : ""}`} id="quadrant-instance-stage" aria-live="polite">
           {openKey && <>
             <header><div><span>{openKey}</span><h3>{text.quadrants[openKey][0]}</h3></div><button type="button" onClick={() => setOpenKey(null)}><Icon name="x" />{text.close}</button></header>
             <div className="quadrant-photo-scatter">
@@ -145,7 +144,7 @@ export function DatasetQuadrantFolders({ locale = "en", endpoint = "./data/pca-s
                   </div>
                   <aside>
                     <span>ANNOTATION</span>
-                    <dl><div><dt>{text.task}</dt><dd>{record.task || "[AUTHOR TO PROVIDE]"}</dd></div><div><dt>{text.anchor}</dt><dd>{record.safetyAnchor || "[AUTHOR TO PROVIDE]"}</dd></div><div><dt>{text.status}</dt><dd>{record.annotationStatus || payload?.version || "[AUTHOR TO PROVIDE]"}</dd></div></dl>
+                    <dl><div><dt>{text.task}</dt><dd>{record.task || "[AUTHOR TO PROVIDE]"}</dd></div><div><dt>{text.anchor}</dt><dd>{record.safetyAnchor || "[AUTHOR TO PROVIDE]"}</dd></div></dl>
                   </aside>
                 </figure>
               ))}

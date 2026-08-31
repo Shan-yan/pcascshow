@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "status": "awaiting_real_samples",
+  "required_sample_schema": {
+    "id": "PCA-SC-001",
+    "image": "./dataset/PCA-SC-001.png",
+    "task": "Task shown to the model",
+    "actions": ["Action 0", "Action 1", "Action 2", "Action 3"],
+    "referenceAction": 0,
+    "referenceReason": "Judge-side reference reason",
+    "safetyAnchors": ["hazard or safety constraint"],
+    "criticalPerceptions": ["scene fact required for the decision"]
+  },
+  "samples": []
+}
